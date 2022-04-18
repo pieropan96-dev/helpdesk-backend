@@ -1,6 +1,7 @@
 package com.pieropan.helpdesk.controller;
 
 import com.pieropan.helpdesk.dominio.Tecnico;
+import com.pieropan.helpdesk.dominio.dtos.TecnicoDto;
 import com.pieropan.helpdesk.service.TecnicoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,8 +17,8 @@ public class TecnicoController {
     private TecnicoService tecnicoService;
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<Tecnico> findById(@PathVariable Integer id) {
+    public ResponseEntity<TecnicoDto> findById(@PathVariable Integer id) {
         Tecnico tecnico = tecnicoService.findById(id);
-        return ResponseEntity.ok().body(tecnico);
+        return ResponseEntity.ok().body(new TecnicoDto(tecnico));
     }
 }
