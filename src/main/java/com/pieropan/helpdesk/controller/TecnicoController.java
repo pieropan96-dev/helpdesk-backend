@@ -5,11 +5,10 @@ import com.pieropan.helpdesk.dominio.dtos.TecnicoDto;
 import com.pieropan.helpdesk.service.TecnicoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -30,5 +29,12 @@ public class TecnicoController {
         List<Tecnico> tecnicos = tecnicoService.findAll();
         List<TecnicoDto> tecnicosDto = tecnicos.stream().map(obj -> new TecnicoDto(obj)).collect(Collectors.toList());
         return ResponseEntity.ok().body(tecnicosDto);
+    }
+
+    @PostMapping
+    public ResponseEntity<TecnicoDto> create(@RequestBody TecnicoDto obj) {
+        Tecnico tecnico = tecnicoService.create(obj);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{id}").buildAndExpand(tecnico.getId()).toUri();
+        return ResponseEntity.created(uri).build();
     }
 }

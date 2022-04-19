@@ -1,6 +1,7 @@
 package com.pieropan.helpdesk.service;
 
 import com.pieropan.helpdesk.dominio.Tecnico;
+import com.pieropan.helpdesk.dominio.dtos.TecnicoDto;
 import com.pieropan.helpdesk.repository.TecnicoRepository;
 import com.pieropan.helpdesk.service.exception.ObjectnotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,5 +20,11 @@ public class TecnicoService {
 
     public List<Tecnico> findAll() {
         return tecnicoRepository.findAll();
+    }
+
+    public Tecnico create(TecnicoDto obj) {
+        obj.setId(null);
+        Tecnico tecnico = new Tecnico(obj);
+        return tecnicoRepository.save(tecnico);
     }
 }

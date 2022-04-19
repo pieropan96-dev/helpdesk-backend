@@ -22,6 +22,7 @@ public class TecnicoDto {
     protected LocalDate dataCriacao = LocalDate.now();
 
     public TecnicoDto() {
+        addPerfil(Perfil.TECNICO);
     }
 
     public TecnicoDto(Tecnico tecnico) {
@@ -32,6 +33,7 @@ public class TecnicoDto {
         this.senha = tecnico.getSenha();
         this.perfis = tecnico.getPerfis().stream().map(x -> x.getCodigo()).collect(Collectors.toSet());
         this.dataCriacao = tecnico.getDataCriacao();
+        addPerfil(Perfil.TECNICO);
     }
 
     public Integer getId() {
@@ -88,5 +90,9 @@ public class TecnicoDto {
 
     public void setDataCriacao(LocalDate dataCriacao) {
         this.dataCriacao = dataCriacao;
+    }
+
+    public void addPerfil(Perfil perfil) {
+        this.perfis.add(perfil.getCodigo());
     }
 }
