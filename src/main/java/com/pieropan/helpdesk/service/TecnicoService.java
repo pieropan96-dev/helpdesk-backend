@@ -6,6 +6,8 @@ import com.pieropan.helpdesk.service.exception.ObjectnotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class TecnicoService {
     @Autowired
@@ -13,5 +15,9 @@ public class TecnicoService {
 
     public Tecnico findById(Integer id) {
         return tecnicoRepository.findById(id).orElseThrow(() -> new ObjectnotFoundException("Objeto não encontrado."));
+    }
+
+    public List<Tecnico> findAll() {
+        return tecnicoRepository.findAll();
     }
 }
