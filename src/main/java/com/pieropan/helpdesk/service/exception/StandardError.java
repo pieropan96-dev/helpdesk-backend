@@ -7,6 +7,9 @@ public class StandardError {
     private String message;
     private String path;
 
+    public StandardError() {
+    }
+
     public StandardError(Long timestamp, Integer status, String error, String message, String path) {
         this.timestamp = timestamp;
         this.status = status;

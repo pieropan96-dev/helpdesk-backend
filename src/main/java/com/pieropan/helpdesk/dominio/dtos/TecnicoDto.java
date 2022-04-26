@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.pieropan.helpdesk.dominio.Tecnico;
 import com.pieropan.helpdesk.dominio.enums.Perfil;
 
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
@@ -12,9 +13,13 @@ import java.util.stream.Collectors;
 public class TecnicoDto {
 
     protected Integer id;
+    @NotNull(message = "O campo nome é requerido")
     protected String nome;
+    @NotNull(message = "O campo cpf é requerido")
     protected String cpf;
+    @NotNull(message = "O campo e-mail é requerido")
     protected String email;
+    @NotNull(message = "O campo senha é requerido")
     protected String senha;
     protected Set<Integer> perfis = new HashSet<>();
 
