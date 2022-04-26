@@ -45,4 +45,11 @@ public class TecnicoService {
             throw new Dataintegrityviolationexception("E-mail já cadastrado no sistema.");
         }
     }
+
+    public Tecnico update(Integer id, TecnicoDto tecnicoDto) {
+        tecnicoDto.setId(id);
+        validaCampos(tecnicoDto);
+        Tecnico tecnico = new Tecnico(tecnicoDto);
+        return pessoaRepository.save(tecnico);
+    }
 }
