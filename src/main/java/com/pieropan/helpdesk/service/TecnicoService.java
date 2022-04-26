@@ -50,6 +50,14 @@ public class TecnicoService {
         tecnicoDto.setId(id);
         validaCampos(tecnicoDto);
         Tecnico tecnico = new Tecnico(tecnicoDto);
-        return pessoaRepository.save(tecnico);
+        return tecnicoRepository.save(tecnico);
+    }
+
+    public void delete(Integer id) {
+        Tecnico tecnico = findById(id);
+        if (!tecnico.getChamados().isEmpty()) {
+            throw new Dataintegrityviolationexception("Ordem possui ordens de serviço e não pode ser deletado!");
+        }
+        tecnicoRepository.delete(tecnico);
     }
 }
