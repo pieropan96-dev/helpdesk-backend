@@ -5,11 +5,11 @@ import com.pieropan.helpdesk.dominio.dtos.ChamadoDto;
 import com.pieropan.helpdesk.service.ChamadoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.validation.Valid;
+import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -30,5 +30,12 @@ public class ChamadoController {
         List<Chamado> chamados = chamadoService.findAll();
         List<ChamadoDto> chamadoDtos = chamados.stream().map(obj -> new ChamadoDto(obj)).collect(Collectors.toList());
         return ResponseEntity.ok().body(chamadoDtos);
+    }
+
+    @PostMapping
+    public ResponseEntity<Chamado> create(@Valid @RequestBody ChamadoDto chamadoDto) {
+        Chamado chamado = chamadoService.create(chamadoDto);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{id}").buildAndExpand(chamado.getId()).toUri();
+        return ResponseEntity.created(uri).build();
     }
 }
