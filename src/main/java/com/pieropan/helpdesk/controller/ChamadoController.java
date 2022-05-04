@@ -1,7 +1,9 @@
 package com.pieropan.helpdesk.controller;
 
 import com.pieropan.helpdesk.dominio.Chamado;
+import com.pieropan.helpdesk.dominio.Cliente;
 import com.pieropan.helpdesk.dominio.dtos.ChamadoDto;
+import com.pieropan.helpdesk.dominio.dtos.ClienteDto;
 import com.pieropan.helpdesk.service.ChamadoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -33,9 +35,15 @@ public class ChamadoController {
     }
 
     @PostMapping
-    public ResponseEntity<Chamado> create(@Valid @RequestBody ChamadoDto chamadoDto) {
+    public ResponseEntity<ChamadoDto> create(@Valid @RequestBody ChamadoDto chamadoDto) {
         Chamado chamado = chamadoService.create(chamadoDto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{id}").buildAndExpand(chamado.getId()).toUri();
         return ResponseEntity.created(uri).build();
+    }
+
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<ChamadoDto> update(@PathVariable Integer id, @Valid @RequestBody ChamadoDto chamadoDto) {
+        Chamado chamado = chamadoService.update(id, chamadoDto);
+        return ResponseEntity.ok().body(new ChamadoDto(chamado));
     }
 }
