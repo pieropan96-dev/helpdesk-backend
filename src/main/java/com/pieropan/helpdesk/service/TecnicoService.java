@@ -8,6 +8,7 @@ import com.pieropan.helpdesk.repository.TecnicoRepository;
 import com.pieropan.helpdesk.service.exception.Dataintegrityviolationexception;
 import com.pieropan.helpdesk.service.exception.ObjectnotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,6 +21,9 @@ public class TecnicoService {
 
     @Autowired
     private PessoaRepository pessoaRepository;
+
+    @Autowired
+    private BCryptPasswordEncoder encoder;
 
     public Tecnico findById(Integer id) {
         return tecnicoRepository.findById(id).orElseThrow(() -> new ObjectnotFoundException("Objeto não encontrado."));
@@ -44,6 +48,7 @@ public class TecnicoService {
         if (pessoa.isPresent() && pessoa.get().getId() != obj.getId()) {
             throw new Dataintegrityviolationexception("E-mail já cadastrado no sistema.");
         }
+        obj.setSenha(encoder.encode(obj.getSenha()));
     }
 
     public Tecnico update(Integer id, TecnicoDto tecnicoDto) {

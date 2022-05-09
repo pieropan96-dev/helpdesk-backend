@@ -8,6 +8,7 @@ import com.pieropan.helpdesk.repository.PessoaRepository;
 import com.pieropan.helpdesk.service.exception.Dataintegrityviolationexception;
 import com.pieropan.helpdesk.service.exception.ObjectnotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,6 +21,9 @@ public class ClienteService {
 
     @Autowired
     private PessoaRepository pessoaRepository;
+
+    @Autowired
+    private BCryptPasswordEncoder encoder;
 
     public Cliente findById(Integer id) {
         return clienteRepository.findById(id).orElseThrow(() -> new ObjectnotFoundException("Objeto não encontrado."));
@@ -44,6 +48,7 @@ public class ClienteService {
         if (pessoa.isPresent() && pessoa.get().getId() != obj.getId()) {
             throw new Dataintegrityviolationexception("E-mail já cadastrado no sistema.");
         }
+        obj.setSenha(encoder.encode(obj.getSenha()));
     }
 
     public Cliente update(Integer id, ClienteDto clienteDto) {
