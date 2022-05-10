@@ -11,10 +11,20 @@ import java.util.stream.Collectors;
 
 public class UserSS implements UserDetails {
 
+    private static final long serialVersionUID = 1L;
+
     private Integer id;
     private String email;
     private String senha;
-    private Collection<GrantedAuthority> authorities;
+    private Collection<? extends GrantedAuthority> authorities;
+
+    public UserSS(Integer id, String email, String senha, Set<Perfil> perfis) {
+        super();
+        this.id = id;
+        this.email = email;
+        this.senha = senha;
+        this.authorities = perfis.stream().map(x -> new SimpleGrantedAuthority(x.getDescricao())).collect(Collectors.toSet());
+    }
 
     public Integer getId() {
         return id;
@@ -27,38 +37,31 @@ public class UserSS implements UserDetails {
 
     @Override
     public String getPassword() {
-        return this.senha;
+        return senha;
     }
 
     @Override
     public String getUsername() {
-        return this.email;
+        return email;
     }
 
     @Override
     public boolean isAccountNonExpired() {
-        return Boolean.TRUE;
+        return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return Boolean.TRUE;
+        return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return Boolean.TRUE;
+        return true;
     }
 
     @Override
     public boolean isEnabled() {
-        return Boolean.TRUE;
-    }
-
-    public UserSS(Integer id, String email, String senha, Set<Perfil> perfis) {
-        this.id = id;
-        this.email = email;
-        this.senha = senha;
-        this.authorities = perfis.stream().map(x -> new SimpleGrantedAuthority(x.getDescricao())).collect(Collectors.toSet());
+        return true;
     }
 }

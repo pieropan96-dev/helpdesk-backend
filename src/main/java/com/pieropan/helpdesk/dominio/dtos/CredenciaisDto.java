@@ -1,6 +1,6 @@
 package com.pieropan.helpdesk.dominio.dtos;
 
-public class CredenciasDto {
+public class CredenciaisDto {
     private String email;
     private String senha;
 

@@ -1,8 +1,7 @@
 package com.pieropan.helpdesk.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.pieropan.helpdesk.dominio.dtos.CredenciasDto;
-import org.springframework.http.HttpStatus;
+import com.pieropan.helpdesk.dominio.dtos.CredenciaisDto;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -23,34 +22,40 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     private JWTUtil jwtUtil;
 
     public JWTAuthenticationFilter(AuthenticationManager authenticationManager, JWTUtil jwtUtil) {
+        super();
         this.authenticationManager = authenticationManager;
         this.jwtUtil = jwtUtil;
     }
 
     @Override
-    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
+    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
+            throws AuthenticationException {
         try {
-            CredenciasDto credencias = new ObjectMapper().readValue(request.getInputStream(), CredenciasDto.class);
-            UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
-                    new UsernamePasswordAuthenticationToken(credencias.getEmail(), credencias.getSenha(), new ArrayList<>());
-            Authentication authentication = authenticationManager.authenticate(usernamePasswordAuthenticationToken);
+            CredenciaisDto creds = new ObjectMapper().readValue(request.getInputStream(), CredenciaisDto.class);
+            UsernamePasswordAuthenticationToken authenticationToken =
+                    new UsernamePasswordAuthenticationToken(creds.getEmail(), creds.getSenha(), new ArrayList<>());
+            Authentication authentication = authenticationManager.authenticate(authenticationToken);
             return authentication;
-        } catch (Exception exception) {
-            throw new RuntimeException(exception);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 
     @Override
-    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
-        String userName = ((UserSS) authResult.getPrincipal()).getUsername();
-        String token = jwtUtil.generateToken(userName);
+    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
+                                            Authentication authResult) throws IOException, ServletException {
+
+        String username = ((UserSS) authResult.getPrincipal()).getUsername();
+        String token = jwtUtil.generateToken(username);
         response.setHeader("access-control-expose-headers", "Authorization");
         response.setHeader("Authorization", "Bearer " + token);
     }
 
     @Override
-    protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
-        response.setStatus(HttpStatus.UNAUTHORIZED.value());
+    protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response,
+                                              AuthenticationException failed) throws IOException, ServletException {
+
+        response.setStatus(401);
         response.setContentType("application/json");
         response.getWriter().append(json());
     }
