@@ -8,6 +8,7 @@ import com.pieropan.helpdesk.repository.TecnicoRepository;
 import com.pieropan.helpdesk.service.exception.Dataintegrityviolationexception;
 import com.pieropan.helpdesk.service.exception.ObjectnotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -30,7 +31,7 @@ public class TecnicoService {
     }
 
     public List<Tecnico> findAll() {
-        return tecnicoRepository.findAll();
+        return tecnicoRepository.findAll(Sort.by(Sort.Direction.ASC,"id"));
     }
 
     public Tecnico create(TecnicoDto obj) {

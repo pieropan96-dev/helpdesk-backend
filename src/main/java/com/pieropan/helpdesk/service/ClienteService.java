@@ -8,6 +8,7 @@ import com.pieropan.helpdesk.repository.PessoaRepository;
 import com.pieropan.helpdesk.service.exception.Dataintegrityviolationexception;
 import com.pieropan.helpdesk.service.exception.ObjectnotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -30,7 +31,7 @@ public class ClienteService {
     }
 
     public List<Cliente> findAll() {
-        return clienteRepository.findAll();
+        return clienteRepository.findAll(Sort.by(Sort.Direction.ASC,"id"));
     }
 
     public Cliente create(ClienteDto obj) {

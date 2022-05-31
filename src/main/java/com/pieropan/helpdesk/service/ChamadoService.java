@@ -9,6 +9,7 @@ import com.pieropan.helpdesk.dominio.enums.Status;
 import com.pieropan.helpdesk.repository.ChamadoRepository;
 import com.pieropan.helpdesk.service.exception.ObjectnotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -30,7 +31,7 @@ public class ChamadoService {
     }
 
     public List<Chamado> findAll() {
-        return chamadoRepository.findAll();
+        return chamadoRepository.findAll(Sort.by(Sort.Direction.ASC,"id"));
     }
 
     public Chamado create(ChamadoDto chamadoDto) {
