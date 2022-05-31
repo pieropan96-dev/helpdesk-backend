@@ -2,6 +2,7 @@ package com.pieropan.helpdesk.service;
 
 import com.pieropan.helpdesk.dominio.Cliente;
 import com.pieropan.helpdesk.dominio.Pessoa;
+import com.pieropan.helpdesk.dominio.Tecnico;
 import com.pieropan.helpdesk.dominio.dtos.ClienteDto;
 import com.pieropan.helpdesk.repository.ClienteRepository;
 import com.pieropan.helpdesk.repository.PessoaRepository;
@@ -54,6 +55,9 @@ public class ClienteService {
 
     public Cliente update(Integer id, ClienteDto clienteDto) {
         clienteDto.setId(id);
+        Cliente cliente = findById(id);
+        if (!cliente.getSenha().equals(clienteDto.getSenha()))
+            clienteDto.setSenha(encoder.encode(clienteDto.getSenha()));
         validaCampos(clienteDto);
         Cliente tecnico = new Cliente(clienteDto);
         return clienteRepository.save(tecnico);
