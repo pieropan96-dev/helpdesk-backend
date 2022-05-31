@@ -54,8 +54,11 @@ public class TecnicoService {
 
     public Tecnico update(Integer id, TecnicoDto tecnicoDto) {
         tecnicoDto.setId(id);
+        Tecnico tecnico = findById(id);
+        if (!tecnico.getSenha().equals(tecnicoDto.getSenha()))
+            tecnicoDto.setSenha(encoder.encode(tecnicoDto.getSenha()));
         validaCampos(tecnicoDto);
-        Tecnico tecnico = new Tecnico(tecnicoDto);
+        tecnico = new Tecnico(tecnicoDto);
         return tecnicoRepository.save(tecnico);
     }
 
