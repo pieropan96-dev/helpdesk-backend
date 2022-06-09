@@ -20,6 +20,7 @@ public class Cliente extends Pessoa {
     public Cliente() {
         super();
         addPerfil(Perfil.CLIENTE);
+        System.out.println();
     }
 
     public Cliente(Integer id, String nome, String cpf, String email, String senha) {
